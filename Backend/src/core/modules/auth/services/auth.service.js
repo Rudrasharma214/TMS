@@ -1,7 +1,7 @@
 import { STATUS } from "../../../constants/statusCodes.js";
 import AppError from "../../../utils/AppError.js";
 import User from "../models/user.model.js";
-import { hashPassword } from "../utils/hashPassword.js";
+import { hashPassword } from "../utils/hashPassword.util.js";
 
 
 export class AuthService {
