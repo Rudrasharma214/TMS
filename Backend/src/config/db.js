@@ -1,23 +1,23 @@
 import { Sequelize } from "sequelize";
-import { env } from "./env.js";
+import env from "./env.js";
 import logger from "./logger.js";
 
 export const sequelize = new Sequelize(
-  env.db.database,
-  env.db.username,
-  env.db.password,
+  env.DB_NAME,
+  env.DB_USER,
+  env.DB_PASSWORD,
   {
-    host: env.db.host,
-    dialect: env.db.dialect || "mysql",
-    port: Number(env.db.port) || 3306,
+    host: env.DB_HOST,
+    dialect: "mysql",
+    port: Number(env.DB_PORT) || 3306,
 
     logging: false,
 
     pool: {
-      max: Number(env.db.pool?.max) || 10,
-      min: Number(env.db.pool?.min) || 0,
-      acquire: Number(env.db.pool?.acquire) || 30000,
-      idle: Number(env.db.pool?.idle) || 10000,
+      max: 10,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
     },
 
     define: {
