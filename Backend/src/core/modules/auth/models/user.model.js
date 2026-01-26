@@ -10,10 +10,9 @@ const User = sequelize.define(
             autoIncrement: true,
             allowNull: false,
         },
-        username: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         email: {
             type: DataTypes.STRING,
@@ -29,13 +28,25 @@ const User = sequelize.define(
             allowNull: false,
             defaultValue: 'user',
         },
+        refreshToken: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        isVerified: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+        lastLoginAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
     },
     {
         tableName: 'users',
         paranoid: true,
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-        deletedAt: 'deleted_at',
-        indexes: [],
+        indexes: [
+            { fields: ['created_at' ] },
+        ],
     }
 );
