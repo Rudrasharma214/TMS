@@ -1,8 +1,9 @@
 import { STATUS } from "../../../constants/statusCodes.js";
 import AppError from "../../../utils/AppError.js";
 import User from "../models/user.model.js";
+import VerifyToken from "../models/verifyToken.model.js";
 import { hashPassword, comparePassword } from "../utils/hashPassword.util.js";
-import { generateToken, generateRefreshToken } from "../utils/token.util.js";
+import { generateToken, generateRefreshToken, generateEmailVerifyToken } from "../utils/token.util.js";
 
 
 export class AuthService {
@@ -25,6 +26,14 @@ export class AuthService {
             name,
             email,
             password: passwordHashed
+        });
+
+        const token = await generateEmailVerifyToken(newUser);
+
+        await VerifyToken.create({
+            userId: newUser.id,
+            token: token,
+            expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000),
         });
 
         return {

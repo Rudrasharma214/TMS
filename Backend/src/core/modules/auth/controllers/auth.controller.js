@@ -41,13 +41,26 @@ export class AuthController {
                 maxAge: 15 * 24 * 60 * 60 * 1000,
             });
 
-            sendResponse(res, STATUS.OK, result.message, {
-                name: result.data.name,
-                email: result.data.email,
-                accessToken: result.data.accessToken,
-            });
+            sendResponse(res, STATUS.OK, result.message, result.data.accessToken);
         } catch (error) {
             next(error);
         }
     };
+
+    static async verifyEmail(req, res, next) {
+        try {
+            const { token } = req.body;
+
+            const result = await AuthService.verifyEmail(token);
+
+            if (!result.success) {
+                sendErrorResponse(res, result.message, STATUS.BAD_REQUEST);
+                return;
+            }
+
+            sendResponse(res, STATUS.OK, result.message);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

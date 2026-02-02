@@ -14,6 +14,8 @@ const env = {
     JWT_SECRET: process.env.JWT_SECRET || 'your_jwt_secret',
     JWT_ACCESS_EXPIRES_IN: process.env.JWT_ACCESS_EXPIRES_IN || '1d',
     JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+
+    EMAIL_VERIFY_SECRET: process.env.EMAIL_VERIFY_SECRET || 'your_email_verify_secret',
 };
 
 export default env;

@@ -16,3 +16,24 @@ export const verifyToken = (token) => {
         throw new Error('Invalid or expired token');
     }
 }
+
+export const generateEmailVerifyToken = (newUser) => {
+  return jwt.sign(
+    {
+      userId: newUser.id,
+      type: 'email_verify',
+    },
+    env.EMAIL_VERIFY_SECRET,
+    { expiresIn: '2h' }
+  );
+};
+
+export const verifyEmailToken = (token) => {
+  const payload = jwt.verify(token, env.EMAIL_VERIFY_SECRET);
+
+  if (payload.type !== 'email_verify') {
+    throw new Error('Invalid token type');
+  }
+
+  return payload.userId;
+};
