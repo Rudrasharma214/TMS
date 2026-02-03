@@ -66,23 +66,23 @@ export class AuthService {
         const transaction = await sequelize.transaction();
 
         try {
-            const decoded = await verifyEmailToken(token);
+            const userId = await verifyEmailToken(token);
 
             const record = await VerifyToken.findOne(
-                { where: { userId: decoded.userId } },
+                { where: { userId } },
                 { transaction }
             );
 
             if (!record || record.expiresAt < new Date()) {
-                throw new Error("Invalid token");
+                return { success: false, message: "Invalid or expired token." };
             }
 
             await record.update({ is_used: true }, { transaction });
 
-            const user = await User.findByPk(decoded.userId, { transaction });
+            const user = await User.findByPk(userId, { transaction });
 
-            const accessToken = generateToken(user);
-            const refreshToken = generateRefreshToken(user);
+            const accessToken = generateToken(user.toJSON());
+            const refreshToken = generateRefreshToken(user.toJSON());
 
             await user.update(
                 { isVerified: true, refreshToken },
@@ -98,7 +98,7 @@ export class AuthService {
             };
         } catch (err) {
             await transaction.rollback();
-            return { success: false, message: "Email verification failed." };
+            return { success: false, message: "Email verification failed.", error: err.message };
         }
     }
 
@@ -118,8 +118,8 @@ export class AuthService {
             return { success: false, message: "Invalid email or password." };
         }
 
-        const accessToken = generateToken(user);
-        const refreshToken = generateRefreshToken(user);
+        const accessToken = generateToken(user.toJSON());
+        const refreshToken = generateRefreshToken(user.toJSON());
 
         await user.update({ refreshToken });
 
@@ -135,12 +135,75 @@ export class AuthService {
         if(!email) {
             return { success: false, message: "Email is required." };
         }
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return { success: false, message: "If user exists, a password reset link will be sent to the email." };
+        }
 
-        // In a real implementation, generate a reset token and send email
+        const token = generateEmailVerifyToken({ id: user.id, type: 'password_reset' });
+
+        await VerifyToken.create({
+            userId: user.id,
+            token,
+            type: 'password_reset',
+            expiresAt: new Date(Date.now() + 1 * 60 * 60 * 1000),
+        });
+
+        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+        publishEvent(authNames.FORGOT_PASSWORD, {
+            name: user.name,
+            email: user.email,
+            resetLink,
+        });
+
+        return {
+            success: true,
+            message: "If user exists, a password reset link will be sent to the email.",
+        }
     }
 
     /* ResetPassword */
     async resetPassword(token, password) {
-        return { success: true, message: "Password reset successful." };
+        if(!token || !password) {
+            return { success: false, message: "Token and new password are required." };
+        }
+        const transaction = await sequelize.transaction();
+
+        try {
+            const userId = await verifyEmailToken(token);
+
+            const record = await VerifyToken.findOne(
+                { where: { userId } },
+                { transaction }
+            );
+
+            if (!record || record.expiresAt < new Date()) {
+                await transaction.rollback();
+                return { success: false, message: "Invalid or expired token." };
+            }
+
+            await record.update({ is_used: true }, { transaction });
+
+            const user = await User.findByPk(userId, { transaction });
+
+            const passwordHashed = await hashPassword(password);
+
+            await user.update(
+                { password: passwordHashed },
+                { transaction }
+            );
+
+            await transaction.commit();
+
+            return {
+                success: true,
+                message: "Password reset successfully.",
+            };
+        } catch (err) {
+            await transaction.rollback();
+            return { success: false, message: "Password reset failed.", error: err.message };
+        }
+
     }
 }

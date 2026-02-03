@@ -19,7 +19,7 @@ export class AuthController {
       const result = await this.authService.signup(name, email, password);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.message, STATUS.BAD_REQUEST);
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message, result.error);
       }
 
       sendResponse(res, STATUS.CREATED, result.message, result.data);
@@ -35,7 +35,7 @@ export class AuthController {
       const result = await this.authService.verifyEmail(token);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.message, STATUS.BAD_REQUEST);
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message, result.error);
       }
 
       res.cookie("refreshToken", result.data.refreshToken, {
@@ -58,7 +58,7 @@ export class AuthController {
       const result = await this.authService.login(email, password);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.message, STATUS.BAD_REQUEST);
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message, result.error);
       }
 
       res.cookie("refreshToken", result.data.refreshToken, {
@@ -81,7 +81,7 @@ export class AuthController {
       const result = await this.authService.forgotPassword(email);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.message, STATUS.BAD_REQUEST);
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message);
       }
 
       sendResponse(res, STATUS.OK, result.message);
@@ -97,7 +97,7 @@ export class AuthController {
       const result = await this.authService.resetPassword(token, password);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.message, STATUS.BAD_REQUEST);
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message, result.error);
       }
 
       sendResponse(res, STATUS.OK, result.message);

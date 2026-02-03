@@ -2,19 +2,33 @@ import jwt from 'jsonwebtoken';
 import env from '../../../../config/env.js';
 
 export const generateToken = (payload) => {
-    return jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.JWT_ACCESS_EXPIRES_IN });
+  const tokenPayload = {
+    id: payload.id,
+    email: payload.email,
+    role: payload.role,
+    profilePic: payload.profilePic,
+    isVerified: payload.isVerified,
+  };
+  return jwt.sign(tokenPayload, env.JWT_SECRET, { expiresIn: env.JWT_ACCESS_EXPIRES_IN });
 }
 
 export const generateRefreshToken = (payload) => {
-    return jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.JWT_REFRESH_EXPIRES_IN });
+  const tokenPayload = {  
+    id: payload.id,
+    email: payload.email,
+    role: payload.role,
+    profilePic: payload.profilePic,
+    isVerified: payload.isVerified,
+  };
+  return jwt.sign(tokenPayload, env.JWT_SECRET, { expiresIn: env.JWT_REFRESH_EXPIRES_IN });
 }
 
 export const verifyToken = (token) => {
-    try {
-        return jwt.verify(token, env.JWT_SECRET);
-    } catch (error) {
-        throw new Error('Invalid or expired token');
-    }
+  try {
+    return jwt.verify(token, env.JWT_SECRET);
+  } catch (error) {
+    throw new Error('Invalid or expired token');
+  }
 }
 
 export const generateEmailVerifyToken = (newUser) => {
