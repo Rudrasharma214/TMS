@@ -1,4 +1,4 @@
-import eventBus from "../eventBus.events";
+import eventBus from "../eventBus.events.js";
 import { sendEmail } from "../../../config/sendMail.js";
 import { sendVerifyEmailTemplate } from "../../templates/authTemplates/verifyEmail.template.js";
 import { sendPasswordResetSuccessEmailTemplate } from "../../templates/authTemplates/forgotPasswordEmail.template.js";

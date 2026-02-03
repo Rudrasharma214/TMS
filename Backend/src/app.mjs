@@ -3,6 +3,7 @@ import { errorHandler } from './core/middlewares/error.middleware.js';
 import authRouter from './core/modules/auth/routes/auth.route.js';
 import { sendResponse } from './core/utils/response.js';
 import { STATUS } from './core/constants/statusCodes.js';
+import './core/events/eventListeners/index.js';
 
 const app = express();
 

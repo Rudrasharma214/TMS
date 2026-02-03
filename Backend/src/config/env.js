@@ -18,7 +18,7 @@ const env = {
     EMAIL_VERIFY_SECRET: process.env.EMAIL_VERIFY_SECRET || 'your_email_verify_secret',
 
     BREVO_API_KEY: process.env.BREVO_API_KEY || '',
-    BREVO_FROM_EMAIL: process.env.BREVO_FROM_EMAIL || ''
+    BREVO_FROM_EMAIL: process.env.BREVO_FROM_EMAIL || 'solver240@gmail.com'
 };
 
 export default env;

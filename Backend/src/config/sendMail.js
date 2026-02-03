@@ -1,5 +1,6 @@
 import SibApiV3Sdk from 'sib-api-v3-sdk';
-import env from './env';
+import env from './env.js';
+import logger from './logger.js';
 
 export const sendEmail = async ({ to, subject, html, text }) => {
   try {
@@ -9,7 +10,7 @@ export const sendEmail = async ({ to, subject, html, text }) => {
 
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-    const senderEmail = env.BREVO_FROM_EMAIL || "no-reply@example.com";
+    const senderEmail = env.BREVO_FROM_EMAIL;
 
     const sendSmtpEmail = {
       sender: { email: senderEmail },
@@ -20,11 +21,27 @@ export const sendEmail = async ({ to, subject, html, text }) => {
     };
 
     const resp = await apiInstance.sendTransacEmail(sendSmtpEmail);
+
+    // Log email details
+    logger.info('Email sent successfully', {
+      to,
+      subject,
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
     const err = new Error(
       `Failed to send email via Brevo: ${error && error.message ? error.message : error}`
     );
     err.cause = error;
+
+    // Log email failure details
+    logger.error('Failed to send email', {
+      to,
+      subject,
+      error: error.message,
+      timestamp: new Date().toISOString(),
+    });
+
     throw err;
   }
 };
