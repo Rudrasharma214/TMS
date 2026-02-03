@@ -4,6 +4,8 @@ import User from "../models/user.model.js";
 import VerifyToken from "../models/verifyToken.model.js";
 import { hashPassword, comparePassword } from "../utils/hashPassword.util.js";
 import { generateToken, generateRefreshToken, generateEmailVerifyToken } from "../utils/token.util.js";
+import { publishEvent } from "../../../events/eventPublisher.js";
+import authNames from "../../../events/eventNames/authNames.js";
 
 
 export class AuthService {
@@ -34,6 +36,14 @@ export class AuthService {
             userId: newUser.id,
             token: token,
             expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000),
+        });
+
+        const verifyLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+
+        publishEvent(authNames.USER_SIGNUP, {
+            name: newUser.name,
+            email: newUser.email,
+            verifyLink: verifyLink
         });
 
         return {

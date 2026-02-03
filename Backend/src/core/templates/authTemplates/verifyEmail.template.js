@@ -1,41 +1,111 @@
-const verifyEmailBody = (username, verifyLink) => `
-  <p style="font-size:16px; margin:0 0 16px;">
-    Hi <strong>${username}</strong>,
+import { emailLayout } from "../../../config/emailTemplate.js";
+
+export const sendVerifyEmailTemplate = (name, verifyLink) => {
+  const body = `
+<tr>
+<td align="center">
+  <h1 style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:26px;
+    font-weight:bold;
+    color:#111111;">
+    Verify Your Email
+  </h1>
+</td>
+</tr>
+
+<tr><td height="20"></td></tr>
+
+<tr>
+<td align="center">
+  <p style="
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    color:#333333;">
+    Hi <strong>${name}</strong>,
+  </p>
+</td>
+</tr>
+
+<tr><td height="25"></td></tr>
+
+<tr>
+<td align="center" style="padding:0 40px;">
+  <p style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    color:#555555;
+    line-height:22px;">
+    Please verify your email address to activate your account.
+    Click the button below to continue.
+  </p>
+</td>
+</tr>
+
+<tr><td height="30"></td></tr>
+
+<tr>
+<td align="center">
+  <a href="${verifyLink}"
+     style="
+       display:inline-block;
+       padding:12px 26px;
+       background:#f6a545;
+       border-radius:4px;
+       font-family:Arial,Helvetica,sans-serif;
+       font-size:14px;
+       color:#ffffff;
+       text-decoration:none;
+       font-weight:bold;">
+    Verify Email
+  </a>
+</td>
+</tr>
+
+<tr><td height="35"></td></tr>
+
+<tr>
+<td align="center" style="padding:0 40px;">
+  <p style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#888888;
+    line-height:18px;">
+    If the button does not work, copy and paste this link into your browser:
   </p>
 
-  <p style="font-size:15px; line-height:1.6; margin:0 0 24px; color:#374151;">
-    Thank you for creating an account. Please verify your email address by clicking the button below.
-  </p>
-
-  <table cellpadding="0" cellspacing="0">
-    <tr>
-      <td>
-        <a href="${verifyLink}" style="
-          background:#111827;
-          color:#ffffff;
-          text-decoration:none;
-          padding:12px 24px;
-          border-radius:4px;
-          font-size:15px;
-          font-weight:600;
-          display:inline-block;
-        ">
-          Verify Email
-        </a>
-      </td>
-    </tr>
-  </table>
-
-  <p style="font-size:14px; color:#6b7280; margin:24px 0 8px;">
-    Or copy and paste this link into your browser:
-  </p>
-
-  <p style="font-size:13px; color:#2563eb; word-break:break-all; margin:0;">
+  <p style="
+    word-break:break-all;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#f6a545;">
     ${verifyLink}
   </p>
+</td>
+</tr>
 
-  <p style="font-size:14px; color:#6b7280; line-height:1.6; margin-top:32px;">
-    If you did not sign up for this account, you can safely ignore this email.
+<tr><td height="30"></td></tr>
+
+<tr>
+<td align="center" style="padding:0 40px;">
+  <p style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#777777;
+    line-height:18px;">
+    This link is valid for a limited time.
+    If you did not create an account, you can safely ignore this email.
   </p>
+</td>
+</tr>
 `;
 
+  return emailLayout({
+    title: "Verify Your Email",
+    body
+  });
+};

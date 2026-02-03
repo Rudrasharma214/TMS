@@ -1,36 +1,88 @@
-const loginOtpBody = (username, otp) => `
-  <p style="font-size:16px; margin:0 0 16px;">
-    Hi <strong>${username}</strong>,
-  </p>
+import { emailLayout } from "../../../config/emailTemplate.js";
 
-  <p style="font-size:15px; line-height:1.6; margin:0 0 24px; color:#374151;">
-    Use the one-time password below to securely log in to your account.
-  </p>
+export const sendLoginOtpEmailTemplate = (name, otp, expiresIn) => {
+  const body = `
+<tr>
+<td align="center">
+  <h1 style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:26px;
+    font-weight:bold;
+    color:#111111;">
+    Login Verification
+  </h1>
+</td>
+</tr>
 
-  <!-- OTP Box -->
-  <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-    <tr>
-      <td style="
-        background:#f9fafb;
-        border:1px solid #e5e7eb;
-        padding:14px 24px;
-        font-size:20px;
-        font-weight:700;
-        letter-spacing:4px;
-        color:#111827;
-        border-radius:4px;
-        text-align:center;
-      ">
-        ${otp}
-      </td>
-    </tr>
-  </table>
+<tr><td height="20"></td></tr>
 
-  <p style="font-size:14px; color:#6b7280; margin:0;">
-    This OTP is valid for a limited time. Do not share it with anyone.
+<tr>
+<td align="center">
+  <p style="
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    color:#333333;">
+    Hi <strong>${name}</strong>,
   </p>
+</td>
+</tr>
 
-  <p style="font-size:14px; color:#6b7280; line-height:1.6; margin-top:24px;">
-    If you did not attempt to log in, please secure your account immediately.
+<tr><td height="25"></td></tr>
+
+<tr>
+<td align="center" style="padding:0 40px;">
+  <p style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    color:#555555;
+    line-height:22px;">
+    Use the following one-time password (OTP) to complete your login.
+    This code is valid for a ${expiresIn}.
   </p>
+</td>
+</tr>
+
+<tr><td height="30"></td></tr>
+
+<!-- OTP BOX -->
+<tr>
+<td align="center">
+  <div style="
+    display:inline-block;
+    padding:14px 28px;
+    border:1px dashed #f6a545;
+    border-radius:6px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:24px;
+    letter-spacing:6px;
+    font-weight:bold;
+    color:#111111;">
+    ${otp}
+  </div>
+</td>
+</tr>
+
+<tr><td height="35"></td></tr>
+
+<tr>
+<td align="center" style="padding:0 40px;">
+  <p style="
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:12px;
+    color:#777777;
+    line-height:18px;">
+    For your security, do not share this code with anyone.
+    If you did not attempt to log in, please ignore this email.
+  </p>
+</td>
+</tr>
 `;
+
+  return emailLayout({
+    title: "Login Verification Code",
+    body
+  });
+};

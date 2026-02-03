@@ -1,74 +1,63 @@
-const emailLayout = (bodyContent) => {
-  return `
+export const emailLayout = ({ title, body }) => `
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>${title}</title>
 </head>
 
-<body style="margin:0; padding:0; background-color:#ffffff; font-family:Arial, Helvetica, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#ffffff; padding:40px 0;">
-    <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;">
+<body style="margin:0;padding:0;background-color:#f2f2f2;">
 
-          <!-- Header -->
-          <tr>
-            <td style="padding:24px 32px; border-bottom:1px solid #e5e7eb;">
-              <h1 style="margin:0; font-size:22px; font-weight:600; color:#111827;">
-                Your Company Name
-              </h1>
-            </td>
-          </tr>
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#f2f2f2">
+<tr>
+<td align="center">
 
-          <!-- Body (Injected) -->
-          <tr>
-            <td style="padding:32px; color:#111827;">
-              ${bodyContent}
-            </td>
-          </tr>
+<table width="600" cellpadding="0" cellspacing="0">
 
-          <!-- Footer -->
-          <tr>
-            <td style="padding:32px; text-align:center; border-top:1px solid #e5e7eb; background:#ffffff;">
+<!-- TOP BAR -->
+<tr>
+  <td height="140" bgcolor="#f6a545"></td>
+</tr>
 
-              <!-- Social Icons -->
-              <table cellpadding="0" cellspacing="0" align="center" style="margin-bottom:12px;">
-                <tr>
-                  <td style="padding:0 6px;">
-                    <a href="https://www.linkedin.com/company/yourcompany" target="_blank">
-                      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
-                           alt="LinkedIn"
-                           width="20"
-                           height="20"
-                           style="display:block; border:0;" />
-                    </a>
-                  </td>
-                  <td style="padding:0 6px;">
-                    <a href="https://www.instagram.com/yourcompany" target="_blank">
-                      <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png"
-                           alt="Instagram"
-                           width="20"
-                           height="20"
-                           style="display:block; border:0;" />
-                    </a>
-                  </td>
-                </tr>
-              </table>
+<!-- CARD -->
+<tr>
+<td align="center">
 
-              <p style="margin:0; font-size:12px; color:#9ca3af;">
-                © ${new Date().getFullYear()} Your Company Name
-              </p>
+<table width="520" cellpadding="0" cellspacing="0"
+style="background:#ffffff;margin-top:-90px;border-radius:6px;">
 
-            </td>
-          </tr>
+<tr><td height="40"></td></tr>
 
-        </table>
-      </td>
-    </tr>
-  </table>
+${body}
+
+<tr><td height="40"></td></tr>
+
+</table>
+
+</td>
+</tr>
+
+<!-- FOOTER -->
+<tr>
+<td align="center" style="padding-top:20px;">
+<p style="
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+font-size:11px;
+color:#999999;">
+© ${new Date().getFullYear()} Your Company. All rights reserved.
+</p>
+</td>
+</tr>
+
+<tr><td height="30"></td></tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
 </body>
 </html>
 `;
-};

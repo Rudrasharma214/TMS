@@ -1,8 +1,15 @@
 import eventBus from "../eventBus.events";
+import { sendEmail } from "../../../config/sendMail.js";
+import { sendVerifyEmailTemplate } from "../../templates/authTemplates/verifyEmail.template.js";
 
 eventBus.on('user_signup', async (payload) => {
-    // Handle user signup event
-    // send verification email
+    const { name, email, verifyLink } = payload;
+
+    await sendEmail({
+        to: email,
+        subject: 'Verification Email for Your Account',
+        html: sendVerifyEmailTemplate(name, verifyLink),
+    })
 });
 
 eventBus.on('user_login', async (payload) => {
