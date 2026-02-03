@@ -206,4 +206,60 @@ export class AuthService {
         }
 
     }
+
+    /* ChangePassword */
+    async changePassword(userId, oldPassword, newPassword) {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return { success: false, message: "User not found." };
+        }
+
+        if(!oldPassword || !newPassword) {
+            return { success: false, message: "Old and new passwords are required." };
+        }
+
+        const isValid = await comparePassword(oldPassword, user.password);
+        if (!isValid) {
+            return { success: false, message: "Old password is incorrect." };
+        }
+
+        const newPasswordHashed = await hashPassword(newPassword);
+
+        await user.update({ password: newPasswordHashed });
+
+        return {
+            success: true,
+            message: "Password changed successfully.",
+        };
+    }
+
+    /* RefreshToken */
+    async refreshToken(userId, token) {
+        const user = await User.findByPk(userId);
+        if (!user || user.refreshToken !== token) {
+            return { success: false, message: "Invalid refresh token." };
+        }
+
+        const accessToken = await generateToken(user.toJSON());
+
+        return {
+            success: true,
+            message: "Token refreshed successfully.",
+            data: { accessToken },
+        };        
+    }
+
+    async logout(userId) {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return { success: false, message: "User not found." };
+        }
+
+        await user.update({ refreshToken: null });
+
+        return {
+            success: true,
+            message: "Logout successful.",
+        };
+    };
 }

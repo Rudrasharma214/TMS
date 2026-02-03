@@ -10,8 +10,12 @@ export class AuthController {
     this.verifyEmail = this.verifyEmail.bind(this);
     this.forgotPassword = this.forgotPassword.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.refreshToken = this.refreshToken.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
+  /* Signup */
   async signup(req, res, next) {
     try {
       const { name, email, password } = req.body;
@@ -28,6 +32,7 @@ export class AuthController {
     }
   }
 
+  /* VerifyEmail */
   async verifyEmail(req, res, next) {
     try {
       const { token } = req.body;
@@ -51,6 +56,7 @@ export class AuthController {
     }
   }
 
+  /* Login */
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
@@ -74,6 +80,7 @@ export class AuthController {
     }
   }
 
+  /* ForgotPassword */
   async forgotPassword(req, res, next) {
     try {
       const { email } = req.body;
@@ -90,6 +97,7 @@ export class AuthController {
     }
   }
 
+  /* ResetPassword */
   async resetPassword(req, res, next) {
     try {
       const { token, password } = req.body;
@@ -105,4 +113,63 @@ export class AuthController {
       next(error);
     }
   }
+
+  /* ChangePassword */
+  async changePassword(req, res, next) {
+    try {
+      const { id: userId } = req.user;
+      const { oldPassword, newPassword } = req.body;
+
+      if(oldPassword === newPassword) {
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, "New password must be different from old password.");
+      }
+
+      const result = await this.authService.changePassword(userId, oldPassword, newPassword);
+
+      if (!result.success) {
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message, result.error);
+      }
+
+      sendResponse(res, STATUS.OK, result.message);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /* RefreshToken */
+  async refreshToken(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const token = req.cookies.refreshToken;
+
+      const result = await this.authService.refreshToken(userId, token);
+
+      if (!result.success) {
+        return sendErrorResponse(res, STATUS.UNAUTHORIZED, result.message, result.error);
+      }
+
+      sendResponse(res, STATUS.OK, result.message, result.data.accessToken);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /* Logout */
+  async logout(req, res, next) {
+    try {
+      const userId = req.user.id;
+
+      const result = await this.authService.logout(userId);
+
+      if (!result.success) {
+        return sendErrorResponse(res, STATUS.BAD_REQUEST, result.message, result.error);
+      }
+
+      res.clearCookie("refreshToken");
+
+      sendResponse(res, STATUS.OK, result.message);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
