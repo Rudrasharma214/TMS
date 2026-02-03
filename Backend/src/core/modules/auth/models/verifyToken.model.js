@@ -1,4 +1,4 @@
-import { sequelize } from "../../../../config/db";
+import { sequelize } from "../../../../config/db.js";
 import { DataTypes } from "sequelize";
 
 const VerifyToken = sequelize.define(
@@ -18,6 +18,11 @@ const VerifyToken = sequelize.define(
 
         token: {
             type: DataTypes.STRING,
+            allowNull: false,
+        },
+
+        type: {
+            type: DataTypes.ENUM('email_verification', 'password_reset'),
             allowNull: false,
         },
 

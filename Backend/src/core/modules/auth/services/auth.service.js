@@ -38,6 +38,7 @@ export class AuthService {
         await VerifyToken.create({
             userId: user.id,
             token,
+            type: 'email_verification',
             expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000),
         });
 

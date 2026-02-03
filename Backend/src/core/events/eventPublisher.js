@@ -1,7 +1,7 @@
 // Helper for publishing events
 
 import logger from '../../config/logger.js';
-import eventBus from './eventBus.js';
+import eventBus from './eventBus.events.js';
 
 export const publishEvent = (eventName, payload = {}) => {
   try {
