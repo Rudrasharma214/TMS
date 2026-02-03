@@ -1,12 +1,17 @@
-import express from 'express';
-import { AuthController } from '../controllers/auth.controller.js';
+import express from "express";
+import { AuthController } from "../controllers/auth.controller.js";
+import { AuthService } from "../services/auth.service.js";
 
 const authRouter = express.Router();
 
-authRouter.post('/signup', AuthController.signup);
-authRouter.post('/login', AuthController.login);
 
-authRouter.post('/verify-email', AuthController.verifyEmail);
+const authService = new AuthService();
+const authController = new AuthController(authService);
 
+authRouter.post("/signup", authController.signup);
+authRouter.post("/login", authController.login);
+authRouter.post("/verify-email", authController.verifyEmail);
+authRouter.post("/forgot-password", authController.forgotPassword);
+authRouter.post("/reset-password", authController.resetPassword);
 
 export default authRouter;
