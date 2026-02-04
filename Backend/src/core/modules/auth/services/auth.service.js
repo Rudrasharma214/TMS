@@ -17,7 +17,7 @@ export class AuthService {
     /* Signup */
     async signup(name, email, password) {
         if (!name || !email || !password) {
-            return { success: false, message: "Name, email, and password are required." };
+            return { success: false, message: "Name, email, and password are required.", statusCode: STATUS.BAD_REQUEST };
         }
 
         const existingUser = await User.findOne({ where: { email } });
@@ -60,7 +60,7 @@ export class AuthService {
     /* VerifyEmail */
     async verifyEmail(token) {
         if (!token) {
-            return { success: false, message: "Verification token is required." };
+            return { success: false, message: "Verification token is required.", statusCode: STATUS.BAD_REQUEST };
         }
 
         const transaction = await sequelize.transaction();
@@ -74,7 +74,7 @@ export class AuthService {
             );
 
             if (!record || record.expires_at < new Date() || record.is_used) {
-                return { success: false, message: "Invalid or expired token." };
+                return { success: false, message: "Invalid or expired token.", statusCode: STATUS.BAD_REQUEST };
             }
 
             await record.update({ is_used: true }, { transaction });
@@ -98,24 +98,24 @@ export class AuthService {
             };
         } catch (err) {
             await transaction.rollback();
-            return { success: false, message: "Email verification failed.", error: err.message };
+            return { success: false, message: "Email verification failed.", error: err.message, statusCode: STATUS.INTERNAL_ERROR };
         }
     }
 
     /* Login */
     async login(email, password) {
         if (!email || !password) {
-            return { success: false, message: "Email and password are required." };
+            return { success: false, message: "Email and password are required.", statusCode: STATUS.BAD_REQUEST };
         }
 
         const user = await User.findOne({ where: { email } });
         if (!user || !user.isVerified) {
-            return { success: false, message: "Invalid credentials or user not verified." };
+            return { success: false, message: "Invalid credentials or user not verified.", statusCode: STATUS.UNAUTHORIZED };
         }
 
         const isValid = await comparePassword(password, user.password);
         if (!isValid) {
-            return { success: false, message: "Invalid email or password." };
+            return { success: false, message: "Invalid email or password.", statusCode: STATUS.UNAUTHORIZED };
         }
 
         const accessToken = generateToken(user.toJSON());
@@ -133,11 +133,11 @@ export class AuthService {
     /* ForgotPassword */
     async forgotPassword(email) {
         if(!email) {
-            return { success: false, message: "Email is required." };
+            return { success: false, message: "Email is required.", statusCode: STATUS.BAD_REQUEST };
         }
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            return { success: false, message: "If user exists, a password reset link will be sent to the email." };
+            return { success: false, message: "If user exists, a password reset link will be sent to the email.", statusCode: STATUS.OK };
         }
 
         const token = generateEmailVerifyToken({ id: user.id, type: 'password_reset' });
@@ -166,7 +166,7 @@ export class AuthService {
     /* ResetPassword */
     async resetPassword(token, password) {
         if(!token || !password) {
-            return { success: false, message: "Token and new password are required." };
+            return { success: false, message: "Token and new password are required.", statusCode: STATUS.BAD_REQUEST };
         }
         const transaction = await sequelize.transaction();
 
@@ -180,7 +180,7 @@ export class AuthService {
 
             if (!record || record.expires_at < new Date() || record.is_used) {
                 await transaction.rollback();
-                return { success: false, message: "Invalid or expired token." };
+                return { success: false, message: "Invalid or expired token.", statusCode: STATUS.BAD_REQUEST };
             }
 
             await record.update({ is_used: true }, { transaction });
@@ -202,7 +202,7 @@ export class AuthService {
             };
         } catch (err) {
             await transaction.rollback();
-            return { success: false, message: "Password reset failed.", error: err.message };
+            return { success: false, message: "Password reset failed.", error: err.message, statusCode: STATUS.INTERNAL_ERROR };
         }
 
     }
@@ -211,16 +211,16 @@ export class AuthService {
     async changePassword(userId, oldPassword, newPassword) {
         const user = await User.findByPk(userId);
         if (!user) {
-            return { success: false, message: "User not found." };
+            return { success: false, message: "User not found.", statusCode: STATUS.NOT_FOUND };
         }
 
         if(!oldPassword || !newPassword) {
-            return { success: false, message: "Old and new passwords are required." };
+            return { success: false, message: "Old and new passwords are required.", statusCode: STATUS.BAD_REQUEST };
         }
 
         const isValid = await comparePassword(oldPassword, user.password);
         if (!isValid) {
-            return { success: false, message: "Old password is incorrect." };
+            return { success: false, message: "Old password is incorrect.", statusCode: STATUS.BAD_REQUEST };
         }
 
         const newPasswordHashed = await hashPassword(newPassword);
@@ -237,7 +237,7 @@ export class AuthService {
     async refreshToken(userId, token) {
         const user = await User.findByPk(userId);
         if (!user || user.refreshToken !== token) {
-            return { success: false, message: "Invalid refresh token." };
+            return { success: false, message: "Invalid refresh token.", statusCode: STATUS.UNAUTHORIZED };
         }
 
         const accessToken = await generateToken(user.toJSON());
@@ -252,7 +252,7 @@ export class AuthService {
     async logout(userId) {
         const user = await User.findByPk(userId);
         if (!user) {
-            return { success: false, message: "User not found." };
+            return { success: false, message: "User not found.", statusCode: STATUS.NOT_FOUND };
         }
 
         await user.update({ refreshToken: null });
