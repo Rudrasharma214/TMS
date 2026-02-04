@@ -58,7 +58,7 @@ font-family:Arial,Helvetica,sans-serif;
 font-size:14px;
 color:#555555;
 line-height:22px;">
-Welcome to <strong>Your Company</strong>!
+Welcome to <strong> Flowstack!</strong>!
 Your account has been successfully created, and you’re all set to get started.
 </p>
 </td>
@@ -68,30 +68,6 @@ Your account has been successfully created, and you’re all set to get started.
 </tr>
 
 <tr><td height="30">&nbsp;</td></tr>
-
-<!-- ================= CTA BUTTON ================= -->
-<tr>
-<td align="center">
-<table cellpadding="0" cellspacing="0">
-<tr>
-<td bgcolor="#f6a545" style="border-radius:4px;">
-<a href="{{DASHBOARD_LINK}}" style="
-display:inline-block;
-padding:12px 26px;
-font-family:Arial,Helvetica,sans-serif;
-font-size:14px;
-color:#ffffff;
-text-decoration:none;
-font-weight:bold;">
-Go to Dashboard
-</a>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-
-<tr><td height="35">&nbsp;</td></tr>
 
 <!-- ================= SUPPORT NOTE ================= -->
 <tr>

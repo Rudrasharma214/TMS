@@ -23,7 +23,7 @@ export const emailLayout = ({ title, body }) => `
     font-size:22px;
     font-weight:bold;
     color:#ffffff;">
-    YOUR COMPANY NAME
+    Flowstack
   </span>
 </td>
 </tr>
@@ -66,7 +66,7 @@ ${body}
   font-family:Arial,Helvetica,sans-serif;
   font-size:12px;
   color:#777777;">
-  © ${new Date().getFullYear()} Your Company Name. All rights reserved.
+  © ${new Date().getFullYear()} Flowstack. All rights reserved.
 </p>
 </td>
 </tr>
