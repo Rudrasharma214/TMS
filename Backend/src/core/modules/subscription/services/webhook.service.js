@@ -1,6 +1,7 @@
 import Payment from "../models/payment.model.js";
 import Subscription from "../models/subscription.model.js";
 import { publishEvent } from "../../../events/eventPublisher.js";
+import paymentNames from "../../../events/eventNames/paymentNames.js";
 
 
 /* Handle Payment Captured */
@@ -36,7 +37,7 @@ export const handlePaymentCaptured = async (paymentData, transaction) => {
             );
         }
 
-        publishEvent('payment.captured', {
+        publishEvent(paymentNames.PAYMENT_CAPTURED, {
             paymentId: payment.id,
             subscriptionId: payment.subscription_id,
             userId: payment.user_id,
@@ -80,7 +81,7 @@ export const handlePaymentFailed = async (paymentData, transaction) => {
             { transaction }
         );
 
-        publishEvent('payment.failed', {
+        publishEvent(paymentNames.PAYMENT_FAILED, {
             paymentId: payment.id,
             subscriptionId: payment.subscription_id,
             userId: payment.user_id,
