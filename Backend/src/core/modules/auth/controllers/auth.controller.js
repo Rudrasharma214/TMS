@@ -67,6 +67,10 @@ export class AuthController {
         return sendErrorResponse(res, result.statusCode, result.message, result.error);
       }
 
+      if(result.requiredOtp) {
+        return sendResponse(res, STATUS.OK, result.message, result.data);
+      }
+
       res.cookie("refreshToken", result.data.refreshToken, {
         httpOnly: true,
         secure: env.NODE_ENV === "production",
@@ -79,6 +83,31 @@ export class AuthController {
       next(error);
     }
   }
+
+  /* VerifyLoginOTP */
+
+  async verifyLoginOTP(req, res, next) {
+    try {
+      const { userId, otp } = req.body;
+
+      const result = await this.authService.verifyLoginOTP(userId, otp);
+
+      if (!result.success) {
+        return sendErrorResponse(res, result.statusCode, result.message, result.error);
+      }
+
+      res.cookie("refreshToken", result.data.refreshToken, {
+        httpOnly: true,
+        secure: env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 15 * 24 * 60 * 60 * 1000,
+      });
+
+      sendResponse(res, STATUS.OK, result.message, result.data.accessToken);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   /* ForgotPassword */
   async forgotPassword(req, res, next) {

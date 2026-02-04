@@ -18,10 +18,6 @@ import { generateOTP } from "../utils/generateOTP.utils.js";
 export class AuthService {
     /* Signup */
     async signup(name, email, password) {
-        if (!name || !email || !password) {
-            return { success: false, message: "Name, email, and password are required.", statusCode: STATUS.BAD_REQUEST };
-        }
-
         try {
             const existingUser = await User.findOne({ where: { email } });
             if (existingUser) {
@@ -70,12 +66,7 @@ export class AuthService {
 
     /* VerifyEmail */
     async verifyEmail(token) {
-        if (!token) {
-            return { success: false, message: "Verification token is required.", statusCode: STATUS.BAD_REQUEST };
-        }
-
         const transaction = await sequelize.transaction();
-
         try {
             const userId = await verifyEmailToken(token);
 
@@ -120,10 +111,6 @@ export class AuthService {
 
     /* Login */
     async login(email, password) {
-        if (!email || !password) {
-            return { success: false, message: "Email and password are required.", statusCode: STATUS.BAD_REQUEST };
-        }
-
         try {
             const user = await User.findOne({ where: { email } });
             if (!user || !user.isVerified) {
@@ -156,8 +143,10 @@ export class AuthService {
                     success: true,
                     requiredOtp: true,
                     message: "OTP sent to your email. Please verify to complete login.",
-                    data: { userId: user.id },
-                    statusCode: STATUS.OK,
+                    data: { 
+                        otpRequired: true,
+                        userId: user.id 
+                    },
                 };
             }
 
@@ -168,6 +157,7 @@ export class AuthService {
 
             return {
                 success: true,
+                requiredOtp: false,
                 message: "Login successful.",
                 data: { accessToken, refreshToken },
             };
@@ -181,11 +171,45 @@ export class AuthService {
         }
     }
 
+    /* VerifyLoginOTP */
+    async verifyLoginOTP(userId, otp) {
+        try {
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return { success: false, message: "User not found.", statusCode: STATUS.NOT_FOUND };
+            }
+
+            const otpRecord = await OTP.findOne({
+                where: { user_id: userId, code: otp },
+                order: [['createdAt', 'DESC']],
+            });
+
+            if (!otpRecord || otpRecord.expiresAt < new Date()) {
+                return { success: false, message: "Invalid or expired OTP.", statusCode: STATUS.BAD_REQUEST };
+            }
+
+            const accessToken = generateToken(user.toJSON());
+            const refreshToken = generateRefreshToken(user.toJSON());
+
+            await user.update({ refreshToken, lastLoginAt: new Date() });
+
+            return {
+                success: true,
+                message: "OTP verified successfully. Login complete.",
+                data: { accessToken, refreshToken },
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: "An error occurred during OTP verification.",
+                statusCode: STATUS.INTERNAL_ERROR,
+                errors: error.message
+            }
+        }
+    };
+
     /* ForgotPassword */
     async forgotPassword(email) {
-        if (!email) {
-            return { success: false, message: "Email is required.", statusCode: STATUS.BAD_REQUEST };
-        }
         try {
             const user = await User.findOne({ where: { email } });
             if (!user) {
@@ -225,11 +249,7 @@ export class AuthService {
 
     /* ResetPassword */
     async resetPassword(token, password) {
-        if (!token || !password) {
-            return { success: false, message: "Token and new password are required.", statusCode: STATUS.BAD_REQUEST };
-        }
         const transaction = await sequelize.transaction();
-
         try {
             const userId = await verifyEmailToken(token);
 
@@ -269,16 +289,11 @@ export class AuthService {
 
     /* ChangePassword */
     async changePassword(userId, oldPassword, newPassword) {
-        const user = await User.findByPk(userId);
-        if (!user) {
-            return { success: false, message: "User not found.", statusCode: STATUS.NOT_FOUND };
-        }
-
-        if (!oldPassword || !newPassword) {
-            return { success: false, message: "Old and new passwords are required.", statusCode: STATUS.BAD_REQUEST };
-        }
-
         try {
+            const user = await User.findByPk(userId);
+            if (!user) {
+                return { success: false, message: "User not found.", statusCode: STATUS.NOT_FOUND };
+            }
             const isValid = await comparePassword(oldPassword, user.password);
             if (!isValid) {
                 return { success: false, message: "Old password is incorrect.", statusCode: STATUS.BAD_REQUEST };
@@ -327,6 +342,7 @@ export class AuthService {
         }
     }
 
+    /* Logout */
     async logout(userId) {
         try {
             const user = await User.findByPk(userId);
