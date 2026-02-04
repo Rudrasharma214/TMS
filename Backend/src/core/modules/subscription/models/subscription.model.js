@@ -1,4 +1,4 @@
-import { sequelize } from "../../../../config/db";
+import { sequelize } from "../../../../config/db.js";
 import { DataTypes } from "sequelize";
 
 const Subscription = sequelize.define(
@@ -40,6 +40,12 @@ const Subscription = sequelize.define(
         cancelled_at: {
             type: DataTypes.DATE,
             allowNull: true,
+        },
+
+        auto_renew: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: true,
         },
 
         renewed_at: {
