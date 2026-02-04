@@ -5,7 +5,7 @@ export class SubscriptionService {
     /* Create Subscription */
     async createSubscription(user_id, subscriptionData) {
         try {
-           const newSubscription = await Subscription.create({
+            const newSubscription = await Subscription.create({
                 user_id,
                 plan_id: subscriptionData.plan_id,
                 start_date: subscriptionData.start_date,
@@ -18,6 +18,7 @@ export class SubscriptionService {
 
             return {
                 success: true,
+                message: "Subscription created successfully",
                 data: newSubscription,
             };
 
@@ -25,6 +26,43 @@ export class SubscriptionService {
             return {
                 success: false,
                 message: "Error creating subscription",
+                error: error.message,
+                statusCode: STATUS.INTERNAL_ERROR,
+            }
+        }
+    };
+
+    /* Get My Subscription */
+    async getMySubscription(user_id) {
+        try {
+            const subscription = await Subscription.findOne({
+                where: { user_id },
+                include: [
+                    {
+                        model: Plan,
+                        as: 'plan',
+                    }
+                ]
+            });
+
+            if (!subscription) {
+                return {
+                    success: false,
+                    message: "No subscription found for this user",
+                    statusCode: STATUS.NOT_FOUND,
+                };
+            }
+
+            return {
+                success: true,
+                message: "Subscription retrieved successfully",
+                data: subscription,
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                message: "Error retrieving subscription",
                 error: error.message,
                 statusCode: STATUS.INTERNAL_ERROR,
             }

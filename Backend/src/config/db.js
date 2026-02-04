@@ -48,11 +48,22 @@ export const connectDB = async () => {
 
 export const syncDB = async () => {
   try {
+    logger.info("Syncing database...");
     await sequelize.sync({ alter: false });
     logger.info("Database synced");
   } catch (err) {
     logger.error("Sync failed");
     throw err;
+  }
+};
+
+export const loadAssociations = async () => {
+  try {
+    logger.info("Loading model associations...");
+    await import("../core/modules/index.js");
+    logger.info("Model associations loaded");    
+  } catch (error) {
+    throw error;
   }
 };
 

@@ -1,7 +1,7 @@
 import app from './app.mjs';
 import env from './config/env.js';
 import logger from './config/logger.js';
-import { connectDB, syncDB, disconnectDB } from './config/db.js';
+import { connectDB, syncDB, disconnectDB, loadAssociations } from './config/db.js';
 
 const PORT = env.PORT || 3000;
 
@@ -10,6 +10,7 @@ let server;
 const startServer = async () => {
     try {
         await connectDB();
+        await loadAssociations();
         await syncDB();
 
         server = app.listen(PORT, '0.0.0.0', () => {
