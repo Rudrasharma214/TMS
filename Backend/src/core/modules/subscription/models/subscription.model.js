@@ -57,6 +57,12 @@ const Subscription = sequelize.define(
             type: DataTypes.ENUM('monthly', 'yearly'),
             allowNull: false,
         },
+
+        status: {
+            type: DataTypes.ENUM('active', 'inactive', 'cancelled', 'expired', 'paused'),
+            allowNull: false,
+            defaultValue: 'inactive',
+        }
     },
     {
         tableName: 'subscriptions',
