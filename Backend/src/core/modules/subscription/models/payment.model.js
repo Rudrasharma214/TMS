@@ -68,8 +68,9 @@ const Payment = sequelize.define(
         },
 
         status: {
-            type: DataTypes.ENUM('pending', 'completed', 'failed', 'refunded'),
+            type: DataTypes.ENUM('pending', 'captured', 'completed', 'failed', 'refunded'),
             allowNull: false,
+            defaultValue: 'pending',
         },
 
         invoice_number: {

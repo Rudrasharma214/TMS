@@ -7,9 +7,17 @@ import './core/events/eventListeners/index.js';
 
 const app = express();
 
-// Middleware
-app.use(express.json());
+// Store raw body for webhook signature verification
+
 app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json({
+  verify: (req, res, buf, encoding) => {
+    if (req.path.includes('/webhook')) {
+      req.rawBody = buf.toString(encoding || 'utf8');
+    }
+  }
+}));
 
 app.get('/', (req, res) => {
   sendResponse(res, STATUS.OK, 'Server is healthy', {
