@@ -1,5 +1,5 @@
 import { sendErrorResponse } from '../utils/response.js';
-import { STATUS } from '../constants/statusCodes';
+import { STATUS } from '../constants/statusCodes.js';
 
 
 export const validate = (schema) => {
