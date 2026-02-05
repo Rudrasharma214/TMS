@@ -1,0 +1,23 @@
+# Ignore artifacts
+node_modules
+dist
+build
+.env
+.env.local
+.env.*.local
+
+# Ignore IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Ignore OS
+.DS_Store
+Thumbs.db
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
