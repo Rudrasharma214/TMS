@@ -26,7 +26,7 @@ const OTP = sequelize.define(
         expiresAt: {
             type: DataTypes.DATE,
             allowNull: false,
-        }
+        },
     },
     {
         tableName: 'otps',

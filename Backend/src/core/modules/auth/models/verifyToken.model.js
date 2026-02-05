@@ -30,17 +30,6 @@ const VerifyToken = sequelize.define(
             type: DataTypes.DATE,
             allowNull: false,
         },
-
-        is_used: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false,
-        },
-
-        used_at: {
-            type: DataTypes.DATE,
-            allowNull: true,
-        }
     },
     {
         tableName: 'verify_tokens',
