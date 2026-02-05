@@ -5,16 +5,17 @@ export const sendVerifyEmailTemplate = (name, verifyLink) => {
 
 <!-- ================= TITLE (CENTER) ================= -->
 <tr>
-  <td>
-    <table width="100%" cellpadding="0" cellspacing="0">
+  <td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
       <tr>
-        <td align="center">
+        <td align="center" style="word-wrap:break-word;">
           <h1 style="
             margin:0;
             font-family:Arial,Helvetica,sans-serif;
-            font-size:26px;
+            font-size:24px;
             font-weight:bold;
-            color:#111111;">
+            color:#111111;
+            text-align:center;">
             Verify Your Email
           </h1>
         </td>
@@ -27,10 +28,10 @@ export const sendVerifyEmailTemplate = (name, verifyLink) => {
 
 <!-- ================= GREETING (LEFT) ================= -->
 <tr>
-  <td>
-    <table width="100%" cellpadding="0" cellspacing="0">
+  <td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
       <tr>
-        <td align="left" style="padding:0 40px;">
+        <td align="left" style="word-wrap:break-word;">
           <p style="
             margin:0;
             font-family:Arial,Helvetica,sans-serif;
@@ -48,10 +49,10 @@ export const sendVerifyEmailTemplate = (name, verifyLink) => {
 
 <!-- ================= MESSAGE (LEFT) ================= -->
 <tr>
-  <td>
-    <table width="100%" cellpadding="0" cellspacing="0">
+  <td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
       <tr>
-        <td align="left" style="padding:0 40px;">
+        <td align="left" style="word-wrap:break-word;">
           <p style="
             margin:0;
             font-family:Arial,Helvetica,sans-serif;
@@ -95,10 +96,10 @@ export const sendVerifyEmailTemplate = (name, verifyLink) => {
 
 <!-- ================= FALLBACK LINK (LEFT) ================= -->
 <tr>
-  <td>
-    <table width="100%" cellpadding="0" cellspacing="0">
+  <td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
       <tr>
-        <td align="left" style="padding:0 40px;">
+        <td align="left" style="word-wrap:break-word;">
           <p style="
             margin:0;
             font-family:Arial,Helvetica,sans-serif;
@@ -109,7 +110,7 @@ export const sendVerifyEmailTemplate = (name, verifyLink) => {
 
           <p style="
             margin-top:8px;
-            word-break:break-all;
+            word-break:break-word;
             font-family:Arial,Helvetica,sans-serif;
             font-size:12px;
             color:#f6a545;">
@@ -125,10 +126,10 @@ export const sendVerifyEmailTemplate = (name, verifyLink) => {
 
 <!-- ================= EXPIRY NOTE (LEFT) ================= -->
 <tr>
-  <td>
-    <table width="100%" cellpadding="0" cellspacing="0">
+  <td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
       <tr>
-        <td align="left" style="padding:0 40px;">
+        <td align="left" style="word-wrap:break-word;">
           <p style="
             margin:0;
             font-family:Arial,Helvetica,sans-serif;

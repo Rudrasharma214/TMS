@@ -3,17 +3,29 @@ export const emailLayout = ({ title, body }) => `
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
+  <style>
+    @media (max-width: 640px) {
+      .email-container {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .content-padding {
+        padding: 0 20px !important;
+      }
+    }
+  </style>
 </head>
 
 <body style="margin:0;padding:0;background:transparent;">
 
-<table width="100%" cellpadding="0" cellspacing="0">
+<table width="100%" cellpadding="0" cellspacing="0" style="min-width:320px;">
 <tr>
-<td align="center">
+<td align="center" style="padding:0;">
 
 <!-- MAIN CONTAINER -->
-<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;overflow:hidden;">
+<table width="600" cellpadding="0" cellspacing="0" class="email-container" style="background:#ffffff;border-radius:6px;overflow:hidden;max-width:600px;margin:0 auto;">
 
 <!-- ================= HEADER ================= -->
 <tr>
@@ -22,7 +34,9 @@ export const emailLayout = ({ title, body }) => `
     font-family:Arial,Helvetica,sans-serif;
     font-size:22px;
     font-weight:bold;
-    color:#ffffff;">
+    color:#ffffff;
+    display:block;
+    text-align:center;">
     Flowstack
   </span>
 </td>
@@ -30,8 +44,8 @@ export const emailLayout = ({ title, body }) => `
 
 <!-- ================= BODY ================= -->
 <tr>
-<td style="padding:40px 30px;">
-<table width="100%" cellpadding="0" cellspacing="0">
+<td style="padding:10px 0px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 ${body}
 </table>
 </td>
@@ -41,12 +55,12 @@ ${body}
 <tr>
 <td align="center" style="padding:25px;">
 
-<table width="100%" cellpadding="0" cellspacing="0">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 
 <!-- DIVIDER -->
 <tr>
 <td align="center">
-<table width="100%" cellpadding="0" cellspacing="0">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
 <td height="1" style="background:#dddddd;line-height:1px;font-size:1px;">
 &nbsp;
@@ -65,7 +79,8 @@ ${body}
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   font-size:12px;
-  color:#777777;">
+  color:#777777;
+  text-align:center;">
   © ${new Date().getFullYear()} Flowstack. All rights reserved.
 </p>
 </td>

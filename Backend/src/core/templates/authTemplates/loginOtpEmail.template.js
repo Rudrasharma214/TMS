@@ -5,16 +5,17 @@ export const sendLoginOtpEmailTemplate = (name, otp, expiresIn) => {
 
 <!-- ================= TITLE (CENTER) ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr>
 <td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+<tr>
+<td align="center" style="word-wrap:break-word;">
 <h1 style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-font-size:26px;
+font-size:24px;
 font-weight:bold;
-color:#111111;">
+color:#111111;
+text-align:center;">
 Login Verification
 </h1>
 </td>
@@ -27,10 +28,10 @@ Login Verification
 
 <!-- ================= GREETING (LEFT) ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -48,10 +49,10 @@ Hi ${name},
 
 <!-- ================= MESSAGE (LEFT) ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -90,14 +91,14 @@ ${otp}
 </td>
 </tr>
 
-<tr><td height="35">&nbsp;</td></tr>
+<tr><td height="30">&nbsp;</td></tr>
 
 <!-- ================= SECURITY NOTE (LEFT) ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;

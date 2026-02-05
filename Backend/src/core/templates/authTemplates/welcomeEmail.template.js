@@ -1,6 +1,7 @@
 import { emailLayout } from "../../../config/emailTemplate.js";
 
-export const sendWelcomeEmailTemplate = (name) => {
+export const 
+sendWelcomeEmailTemplate = (name) => {
   const body = `
 
 <!-- ================= TITLE ================= -->

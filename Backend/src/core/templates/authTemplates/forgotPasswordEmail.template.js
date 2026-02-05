@@ -6,16 +6,17 @@ export const sendForgotPasswordEmailTemplate = (name, resetLink) => {
 
 <!-- ================= TITLE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr>
 <td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+<tr>
+<td align="center" style="word-wrap:break-word;">
 <h1 style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-font-size:26px;
+font-size:24px;
 font-weight:bold;
-color:#111111;">
+color:#111111;
+text-align:center;">
 Reset Your Password
 </h1>
 </td>
@@ -28,10 +29,10 @@ Reset Your Password
 
 <!-- ================= GREETING ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -49,10 +50,10 @@ Hi ${name},
 
 <!-- ================= MESSAGE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -96,10 +97,10 @@ Reset Password
 
 <!-- ================= FALLBACK LINK ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -110,7 +111,7 @@ If the button does not work, copy and paste this link into your browser:
 
 <p style="
 margin-top:8px;
-word-break:break-all;
+word-break:break-word;
 font-family:Arial,Helvetica,sans-serif;
 font-size:12px;
 color:#f6a545;">
@@ -126,10 +127,10 @@ ${resetLink}
 
 <!-- ================= NOTE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -159,16 +160,17 @@ export const sendPasswordResetSuccessEmailTemplate = (name) => {
 
 <!-- ================= TITLE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr>
 <td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+<tr>
+<td align="center" style="word-wrap:break-word;">
 <h1 style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-font-size:26px;
+font-size:24px;
 font-weight:bold;
-color:#111111;">
+color:#111111;
+text-align:center;">
 Password Updated Successfully
 </h1>
 </td>
@@ -181,10 +183,10 @@ Password Updated Successfully
 
 <!-- ================= GREETING ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -202,10 +204,10 @@ Hi ${name},
 
 <!-- ================= MESSAGE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -225,10 +227,10 @@ You can now sign in using your new password.
 
 <!-- ================= SECURITY NOTE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
@@ -248,10 +250,10 @@ and contact our support team.
 
 <!-- ================= FOOT NOTE ================= -->
 <tr>
-<td>
-<table width="100%" cellpadding="0" cellspacing="0">
+<td class="content-padding" style="padding:0 40px;word-wrap:break-word;">
+<table width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
 <tr>
-<td align="left" style="padding:0 40px;">
+<td align="left" style="word-wrap:break-word;">
 <p style="
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
