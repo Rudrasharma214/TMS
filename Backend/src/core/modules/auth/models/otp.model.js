@@ -26,16 +26,7 @@ const OTP = sequelize.define(
         expiresAt: {
             type: DataTypes.DATE,
             allowNull: false,
-        },
-        attempt: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0,
-        },
-        cooldown: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
+        }
     },
     {
         tableName: 'otps',
