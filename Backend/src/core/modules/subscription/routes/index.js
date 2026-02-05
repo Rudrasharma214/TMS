@@ -21,6 +21,6 @@ subscriptionRouter.use('/payments', paymentRoutes);
  * Create a new subscription
  * Path : /api/subscriptions
  */
-subscriptionRouter.post('/', subscriptionRoutes)
+subscriptionRouter.use('/', subscriptionRoutes)
 
 export default subscriptionRouter;

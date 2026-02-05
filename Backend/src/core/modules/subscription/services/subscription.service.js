@@ -1,6 +1,6 @@
 import { STATUS } from "../../../constants/statusCodes.js";
 import Subscription from "../models/subscription.model.js";
-
+import Plan from "../models/plan.model.js";
 export class SubscriptionService {
     /* Create Subscription */
     async createSubscription(user_id, subscriptionData) {
@@ -37,10 +37,26 @@ export class SubscriptionService {
         try {
             const subscription = await Subscription.findOne({
                 where: { user_id },
+                attributes: [
+                    'id',
+                    'plan_id',
+                    'start_date',
+                    'end_date',
+                    'is_active',
+                    'cancelled_at',
+                    'auto_renew',
+                    'renewed_at',
+                    'billing_cycle',
+                    'status',
+                ],
                 include: [
                     {
                         model: Plan,
                         as: 'plan',
+                        attributes: [
+                            'name',
+                            'description',
+                        ],
                     }
                 ]
             });

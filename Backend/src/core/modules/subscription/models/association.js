@@ -23,4 +23,7 @@ export class SubscriptionAssociations {
             as: 'payments',
         });
     }
-};
+}
+
+// Initialize associations
+SubscriptionAssociations.associate();
