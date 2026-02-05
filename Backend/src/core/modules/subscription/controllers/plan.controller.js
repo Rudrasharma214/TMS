@@ -7,7 +7,6 @@ export class PlanController {
         this.getAllPlans = this.getAllPlans.bind(this);
         this.createPlan = this.createPlan.bind(this);
         this.updatePlan = this.updatePlan.bind(this);
-        this.deactivatePlan = this.deactivatePlan.bind(this);
         this.deletePlan = this.deletePlan.bind(this);
     }
 
@@ -22,14 +21,14 @@ export class PlanController {
                 return sendErrorResponse(res, plans.statusCode, plans.message, plans.errors);
             }
 
-            sendResponse(res, STATUS.OK, "Plans retrieved successfully", plans.data);
+            sendResponse(res, STATUS.OK, plans.message, plans.data);
         } catch (error) {
             next(error);
         }
     };
 
     /* Create Plan */
-    async createPlan(req, res, next) {
+    async createPlan(req, res, next) {  
         try {
             const planData = req.body;
 
@@ -39,7 +38,7 @@ export class PlanController {
                 return sendErrorResponse(res, newPlan.statusCode, newPlan.message, newPlan.errors);
             }
 
-            sendResponse(res, STATUS.CREATED, "Plan created successfully", newPlan.data);
+            sendResponse(res, STATUS.CREATED, newPlan.message, newPlan.data);
         } catch (error) {
             next(error);
         }
@@ -61,27 +60,7 @@ export class PlanController {
                 return sendErrorResponse(res, updatedPlan.statusCode, updatedPlan.message, updatedPlan.errors);
             }
 
-            sendResponse(res, STATUS.OK, "Plan updated successfully", updatedPlan.data);
-        } catch (error) {
-            next(error);
-        }
-    };
-
-    /* Deactivate Plan */
-    async deactivatePlan(req, res, next) {
-        try {
-            const { id } = req.params;
-            if(!id) {
-                return sendErrorResponse(res, STATUS.BAD_REQUEST, "Plan ID is required", null);
-            }
-
-            const deactivatedPlan = await this.planService.deactivatePlan(id);
-
-            if(!deactivatedPlan.success) {
-                return sendErrorResponse(res, deactivatedPlan.statusCode, deactivatedPlan.message, deactivatedPlan.errors);
-            }
-
-            sendResponse(res, STATUS.OK, "Plan deactivated successfully", deactivatedPlan.data);
+            sendResponse(res, STATUS.OK, updatedPlan.message, updatedPlan.data);
         } catch (error) {
             next(error);
         }
@@ -101,7 +80,7 @@ export class PlanController {
                 return sendErrorResponse(res, deletedPlan.statusCode, deletedPlan.message, deletedPlan.errors);
             }
 
-            sendResponse(res, STATUS.OK, "Plan deactivated successfully", deletedPlan.data);
+            sendResponse(res, STATUS.OK, deletedPlan.message, deletedPlan.data);
         } catch (error) {
             next(error);
         }

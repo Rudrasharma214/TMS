@@ -29,6 +29,7 @@ export class PlanService {
 
             return {
                 success: true,
+                message: "Plans retrieved successfully",
                 data: plans
             };
         } catch (error) {
@@ -44,19 +45,11 @@ export class PlanService {
     /* Create Plan */
     async createPlan(planData) {
         try {
-            if (!planData.name || !planData.montly_price || !planData.yearly_price) {
-                return {
-                    success: false,
-                    statusCode: STATUS.BAD_REQUEST,
-                    message: "Missing required fields",
-                    errors: null
-                };
-            }
-
             const newPlan = await Plan.create(planData);
 
             return {
                 success: true,
+                message: "Plan created successfully",
                 data: newPlan
             };
 
@@ -88,6 +81,7 @@ export class PlanService {
 
             return {
                 success: true,
+                message: "Plan updated successfully",
                 data: plan
             };
         } catch (error) {
@@ -95,36 +89,6 @@ export class PlanService {
                 success: false,
                 statusCode: STATUS.INTERNAL_ERROR,
                 message: "An error occurred while updating the plan",
-                errors: error.message
-            }
-        }
-    };
-
-    /* Deactivate Plan */
-    async deactivatePlan(id) {
-        try {
-            const plan = await Plan.findByPk(id);
-            if (!plan) {
-                return {
-                    success: false,
-                    statusCode: STATUS.NOT_FOUND,
-                    message: "Plan not found",
-                    errors: null
-                };
-            }
-
-            plan.is_active = false;
-            await plan.save();
-
-            return {
-                success: true,
-                data: plan
-            };
-        } catch (error) {
-            return {
-                success: false,
-                statusCode: STATUS.INTERNAL_ERROR,
-                message: "An error occurred while deactivating the plan",
                 errors: error.message
             }
         }
@@ -144,10 +108,11 @@ export class PlanService {
                 };
             }
 
-            await plan.destroy({ force: false });
+            await plan.destroy();
 
             return {
                 success: true,
+                message: "Plan deleted successfully",
                 data: plan
             };
         } catch (error) {
