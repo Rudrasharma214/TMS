@@ -104,7 +104,6 @@ authRouter.post(
  */
 authRouter.post(
     "/refresh-token",
-    authenticate,
     authController.refreshToken
 );
 

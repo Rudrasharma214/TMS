@@ -10,6 +10,7 @@ import {
     generateEmailVerifyToken,
     verifyEmailToken,
     verifyPasswordToken,
+    verifyToken,
 } from "../utils/token.util.js";
 import { publishEvent } from "../../../events/eventPublisher.js";
 import authNames from "../../../events/eventNames/authNames.js";
@@ -242,13 +243,13 @@ export class AuthService {
 
             const token = generateEmailVerifyToken({ id: user.id, type: 'password_reset' });
 
-            await verifyTokenRepository.createToken(
-                user.id,
+            await verifyTokenRepository.createToken({
+                userId: user.id,
                 token,
-                new Date(Date.now() + 1 * 60 * 60 * 1000),
-                'password_reset',
+                expiresAt: new Date(Date.now() + 1 * 60 * 60 * 1000),
+                type: 'password_reset',
                 transaction
-            );
+            });
 
             const resetLink = `${env.FRONTEND_URL}/reset-password?token=${token}`;
 
@@ -343,8 +344,11 @@ export class AuthService {
     }
 
     /* RefreshToken */
-    async refreshToken(userId, token) {
+    async refreshToken(token) {
         try {
+            const payload = verifyToken(token);
+            const userId = payload.id;
+            
             const user = await userRepository.findById(userId);
             if (!user || user.refreshToken !== token) {
                 return { success: false, message: "Invalid refresh token.", statusCode: STATUS.UNAUTHORIZED };

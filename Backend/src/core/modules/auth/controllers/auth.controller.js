@@ -118,7 +118,7 @@ export class AuthController {
       const result = await this.authService.forgotPassword(email);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.statusCode, result.message);
+        return sendErrorResponse(res, result.statusCode, result.message, result.errors);
       }
 
       sendResponse(res, STATUS.OK, result.message);
@@ -169,14 +169,13 @@ export class AuthController {
   /* RefreshToken */
   async refreshToken(req, res, next) {
     try {
-      const userId = req.user.id;
       const token = req.cookies?.refreshToken;
 
       if (!token) {
         return sendErrorResponse(res, STATUS.UNAUTHORIZED, "Refresh token not found. Please login again.");
       }
 
-      const result = await this.authService.refreshToken(userId, token);
+      const result = await this.authService.refreshToken(token);
 
       if (!result.success) {
         return sendErrorResponse(res, result.statusCode, result.message, result.error);

@@ -29,7 +29,9 @@ export class VerifyTokenRepository {
         return await VerifyToken.destroy({
             where: {
                 id: tokenId
-            }, transaction
+            }, 
+            force: true,
+            transaction
         });
     }
 
