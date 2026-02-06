@@ -24,7 +24,7 @@ export class AuthController {
       const result = await this.authService.signup(name, email, password);
 
       if (!result.success) {
-        return sendErrorResponse(res, result.statusCode, result.message, result.error);
+        return sendErrorResponse(res, result.statusCode, result.message, result.errors);
       }
 
       sendResponse(res, STATUS.CREATED, result.message, result.data);

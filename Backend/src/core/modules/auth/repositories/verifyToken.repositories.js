@@ -3,11 +3,11 @@ import VerifyToken from "../models/verifyToken.model.js";
 export class VerifyTokenRepository {
 
     /* Create new verify token */
-    async createToken(userId, token, expiresAt, type, transaction = null) {
+    async createToken({userId, token, expiresAt, type, transaction = null}) {
         return await VerifyToken.create({
             user_id: userId,
             token,
-            expiresAt,
+            expires_at: expiresAt,
             type
         }, {
             transaction

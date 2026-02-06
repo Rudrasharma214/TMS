@@ -42,13 +42,13 @@ export class AuthService {
 
             const token = await generateEmailVerifyToken({ id: user.id, type: 'email_verify' });
 
-            await verifyTokenRepository.createToken(
-                user.id,
-                token,
-                new Date(Date.now() + 2 * 60 * 60 * 1000),
-                'email_verification',
+            await verifyTokenRepository.createToken({
+                userId: user.id,
+                token: token,
+                expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000),
+                type: 'email_verification',
                 transaction
-            );
+            });
 
             await transaction.commit();
 
@@ -131,7 +131,7 @@ export class AuthService {
 
             const isValid = await comparePassword(password, user.password);
             if (!isValid) {
-                await transaction.rollback();   
+                await transaction.rollback();
                 return { success: false, message: "Invalid email or password.", statusCode: STATUS.UNAUTHORIZED };
             }
 

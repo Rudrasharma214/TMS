@@ -31,10 +31,10 @@ export const verifyToken = (token) => {
   }
 }
 
-export const generateEmailVerifyToken = (newUser, type) => {
+export const generateEmailVerifyToken = ({ id, type }) => {
   return jwt.sign(
     {
-      userId: newUser.id,
+      userId: id,
       type: type,
     },
     env.EMAIL_VERIFY_SECRET,
