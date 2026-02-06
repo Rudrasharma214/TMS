@@ -6,13 +6,17 @@ import { createRazorpayOrder, verifyRazorpaySignature } from "../utils/payment.u
 import { sequelize } from "../../../../config/db.js";
 import { handlePaymentCaptured, handlePaymentFailed } from "./webhook.service.js";
 import { generateInvoiceNumber } from "../utils/invoiceNumber.utils.js";
+import { PaymentRepository } from "../repositories/payment.repositories.js";
+import { SubscriptionRepository } from "../repositories/subscription.repositories.js";
 
+const paymentRepository = new PaymentRepository();
+const subscriptionRepository = new SubscriptionRepository();
 export class PaymentService {
     /* Create Payment Order */
     async createPaymentOrder(userId, subscriptionId) {
         const transaction = await sequelize.transaction();
         try {
-            const subscription = await Subscription.findOne({
+            const subscription = await subscriptionRepository.findOne({
                 where: { id: subscriptionId },
                 include: [
                     {
@@ -20,9 +24,8 @@ export class PaymentService {
                         as: "plan",
                     }
                 ],
-            },
-                { transaction }
-            );
+                transaction,
+            });
             if (!subscription) {
                 await transaction.rollback();
                 return {
@@ -41,8 +44,7 @@ export class PaymentService {
                 "INR",
                 `receipt_${userId}_${subscriptionId}_${Date.now()}`
             );
-
-            const payment = await Payment.create({
+            const paymentData = {
                 subscription_id: subscriptionId,
                 plan_id: subscription.plan.id,
                 user_id: userId,
@@ -53,7 +55,8 @@ export class PaymentService {
                 currency: order.currency,
                 status: 'pending',
                 invoice_number: invoiceNumber,
-            }, { transaction });
+            };
+            const payment = await paymentRepository.createPayment(paymentData, transaction);
 
             await transaction.commit();
 

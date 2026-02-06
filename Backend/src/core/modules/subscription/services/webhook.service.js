@@ -2,15 +2,17 @@ import Payment from "../models/payment.model.js";
 import Subscription from "../models/subscription.model.js";
 import { publishEvent } from "../../../events/eventPublisher.js";
 import paymentNames from "../../../events/eventNames/paymentNames.js";
+import { PaymentRepository } from "../repositories/payment.repositories.js";
 
+const paymentRepository = new PaymentRepository();
 
 /* Handle Payment Captured */
 export const handlePaymentCaptured = async (paymentData, transaction) => {
     try {
-        const payment = await Payment.findOne(
-            { where: { gateway_order_id: paymentData.order_id } },
-            { transaction }
-        );
+        const payment = await paymentRepository.findOne({
+            where: { gateway_order_id: paymentData.order_id },
+            transaction
+        });
 
         if (!payment) {
             return {
@@ -60,10 +62,10 @@ export const handlePaymentCaptured = async (paymentData, transaction) => {
 /* Handle Payment Failed */
 export const handlePaymentFailed = async (paymentData, transaction) => {
     try {
-        const payment = await Payment.findOne(
-            { where: { gateway_order_id: paymentData.order_id } },
-            { transaction }
-        );
+        const payment = await paymentRepository.findOne({
+            where: { gateway_order_id: paymentData.order_id },
+            transaction
+        });
 
         if (!payment) {
             return {
