@@ -49,16 +49,16 @@ export const connectDB = async () => {
     }
 };
 
-export const syncDB = async () => {
-    try {
-        logger.info('Syncing database...');
-        await sequelize.sync({ alter: false });
-        logger.info('Database synced');
-    } catch (err) {
-        logger.error('Sync failed');
-        throw err;
-    }
-};
+// export const syncDB = async () => {
+//     try {
+//         logger.info('Syncing database...');
+//         await sequelize.sync({ alter: false });
+//         logger.info('Database synced');
+//     } catch (err) {
+//         logger.error('Sync failed');
+//         throw err;
+//     }
+// };
 
 export const loadAssociations = async () => {
     logger.info('Loading model associations...');

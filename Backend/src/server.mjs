@@ -11,7 +11,7 @@ const startServer = async () => {
     try {
         await connectDB();
         await loadAssociations();
-        await syncDB();
+        // await syncDB();
 
         server = app.listen(PORT, '0.0.0.0', () => {
             logger.info(`Server running on port ${PORT}`);
