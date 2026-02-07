@@ -22,6 +22,7 @@ import './core/events/eventListeners/index.js';
 */
 import authRouter from './core/modules/auth/routes/auth.route.js';
 import subscriptionRouter from './core/modules/subscription/routes/index.js';
+import { projectsRouter } from './modules/projects/index.js';
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/subscription', subscriptionRouter);
+app.use('/api/projects', projectsRouter);
 
 app.use(errorHandler);
 export default app;
