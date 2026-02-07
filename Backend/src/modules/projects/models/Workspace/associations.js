@@ -1,6 +1,6 @@
 import Project from './project.model.js';
 import ProjectMember from './projectMember.model.js';
-import ProjectInvitation from './projectInvitation.mode.js';
+import ProjectInvitation from './projectInvitation.model.js';
 import User from '../../../../core/modules/auth/models/user.model.js';
 
 export class WorkspaceAssociations {

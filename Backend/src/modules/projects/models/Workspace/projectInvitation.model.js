@@ -18,22 +18,16 @@ const ProjectInvitation = sequelize.define(
             comment: 'Foreign key referencing the project'
         },
 
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: 'Name of the invited user'
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            comment: 'Foreign key referencing the user'
         },
 
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             comment: 'Email address of the invited user'
-        },
-
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            comment: 'Foreign key referencing the user'
         },
 
         token: {
@@ -80,7 +74,6 @@ const ProjectInvitation = sequelize.define(
         paranoid: true,
         indexes: [
             { fields: ['project_id'] },
-            { fields: ['name'] },
             { fields: ['email'] }
         ]
     }
