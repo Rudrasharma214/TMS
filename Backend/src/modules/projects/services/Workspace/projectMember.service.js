@@ -6,7 +6,7 @@ import { UserRepository } from '../../../../core/modules/auth/repositories/user.
 import { ProjectRepository } from '../../repositories/Workspace/project.repositories.js';
 import { ProjectInvitationRepository } from '../../repositories/Workspace/projectInvitation.repositories.js';
 import { ProjectMemberRepository } from '../../repositories/Workspace/projectMember.repositories.js';
-import { generateInviteToken } from '../../utils/inviteToken.utils.js';
+import { generateInviteToken, verifyInviteToken } from '../../utils/inviteToken.utils.js';
 
 const userRepository = new UserRepository();
 const projectRepository = new ProjectRepository();
@@ -89,6 +89,7 @@ export class ProjectMemberService {
     async acceptInvitation(token, email, projectId) {
         const transaction = await sequelize.transaction();
         try {
+            await verifyInviteToken(token);
             const invitation = await projectInvitationRepository.findInvitationByEmailAndProjectId(email, projectId, transaction);
             if(!invitation || invitation.token !== token || invitation.status !== 'pending' || new Date() > invitation.expires_at) {
                 await transaction.rollback();
@@ -132,6 +133,41 @@ export class ProjectMemberService {
             return  {
                 success: false,
                 message: 'Failed to accept the project invitation',
+                errors: error.message,
+                statusCode: STATUS.INTERNAL_ERROR
+            };
+        }
+    };
+
+    /* Reject a project invitation */
+    async rejectInvitation(token, email, projectId) {
+        const transaction = await sequelize.transaction();
+        try {
+            await verifyInviteToken(token);
+            const invitation = await projectInvitationRepository.findInvitationByEmailAndProjectId(email, projectId, transaction);
+            if(!invitation || invitation.token !== token || invitation.status !== 'pending' || new Date() > invitation.expires_at) {
+                await transaction.rollback();
+                return {
+                    success: false,
+                    message: 'Invalid or expired invitation token',
+                    statusCode: STATUS.BAD_REQUEST
+                };
+            }
+
+            await projectInvitationRepository.updateInvitationStatus(invitation.id, 'rejected', transaction);
+
+            await transaction.commit();
+
+            return {
+                success: true,
+                message: 'Invitation rejected successfully',
+                statusCode: STATUS.OK
+            };            
+        } catch (error) {
+            await transaction.rollback();
+            return {
+                success: false,
+                message: 'Failed to reject the project invitation',
                 errors: error.message,
                 statusCode: STATUS.INTERNAL_ERROR
             };

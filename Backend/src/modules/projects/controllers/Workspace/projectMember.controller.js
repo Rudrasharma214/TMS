@@ -6,6 +6,7 @@ export class ProjectMemberController {
         this.projectMemberService = projectMemberService;
         this.inviteMember = this.inviteMember.bind(this);
         this.acceptInvitation = this.acceptInvitation.bind(this);
+        this.rejectInvitation = this.rejectInvitation.bind(this);
     };
 
     /* Invite an member */
@@ -37,6 +38,27 @@ export class ProjectMemberController {
             const { token, email, projectId } = req.body;
 
             const result = await this.projectMemberService.acceptInvitation(
+                token,
+                email,
+                parseInt(projectId)
+            );
+
+            if(!result) {
+                return sendErrorResponse(res, result.statusCode, result.message, result.errors);
+            }
+
+            return sendResponse(res, STATUS.OK, result.message, result.data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    /* Reject a project invitation */
+    async rejectInvitation(req, res, next) {
+        try {
+            const { token, email, projectId } = req.body;
+
+            const result = await this.projectMemberService.rejectInvitation(
                 token,
                 email,
                 parseInt(projectId)

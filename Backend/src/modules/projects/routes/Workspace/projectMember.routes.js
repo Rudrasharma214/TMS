@@ -16,7 +16,7 @@ const projectMemberRoutes = express.Router({ mergeParams: true });
  * @access  Protected (requires authentication)
  */
 projectMemberRoutes.post(
-    '/',
+    '/invite',
     authenticate,
     validate(projectMemberInviteSchema),
     projectMemberController.inviteMember
@@ -30,6 +30,16 @@ projectMemberRoutes.post(
 projectMemberRoutes.post(
     '/accept-invitation',
     projectMemberController.acceptInvitation
+);
+
+/**
+ * @route   GET /api/projects/:projectId/reject-invitation
+ * @desc    Reject a project invitation
+ * @access  Protected (requires authentication)
+ */
+projectMemberRoutes.post(
+    '/reject-invitation', 
+    projectMemberController.rejectInvitation
 );
 
 export default projectMemberRoutes;
